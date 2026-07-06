@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Github, Linkedin, Mail, FileDown, ArrowDown, ExternalLink, Sprout, Radio } from "lucide-react";
+import profilePhoto from "./assets/profile.jpg";
 
 // ---------------------------------------------------------------------------
 // Design tokens (see design plan)
@@ -314,7 +315,28 @@ export default function Portfolio() {
             <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 14, textTransform: "uppercase" }}>
               01 — About
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 60, alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "0.85fr 1.3fr 1fr", gap: 44, alignItems: "start" }}>
+              <div
+                style={{
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(0,240,255,0.25)",
+                  boxShadow: "0 0 24px rgba(0,240,255,0.15), 0 0 60px rgba(255,46,151,0.08)",
+                  minWidth: 220,
+                }}
+              >
+                <img
+                  src={profilePhoto}
+                  alt="Gourav"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                    filter: "saturate(0.95) contrast(1.03)",
+                  }}
+                />
+              </div>
               <div style={{ minWidth: 280 }}>
                 <h2 className="font-display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, marginBottom: 20, lineHeight: 1.25 }}>
                   I like systems that don't fall over.
