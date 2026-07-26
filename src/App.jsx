@@ -9,6 +9,27 @@ import profilePhoto from "./assets/profile.jpg";
 // accent (nebula):  #00F0FF     accent-warm (star): #FF2E97
 // ---------------------------------------------------------------------------
 
+const EXPERIENCE = [
+  {
+    id: "inamigos",
+    role: "AI Data Analytics Intern",
+    org: "InAmigos Foundation",
+    status: "Current",
+    date: "Since Jul 2026",
+    description:
+      "Two-week internship focused on AI-driven data analytics, with flexible remote working hours.",
+  },
+  {
+    id: "unessa",
+    role: "Python Development Intern",
+    org: "Unessa Foundation · via Internshala",
+    status: "Certified",
+    date: "Jan 28, 2026",
+    description:
+      "Selected for a Python Development internship, working on backend tasks and real-world Python problem solving.",
+  },
+];
+
 const PROJECTS = [
   {
     id: "ecofarm",
@@ -98,11 +119,7 @@ export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("about");
 
   useEffect(() => {
-<<<<<<< HEAD
     const sections = ["about", "experience", "projects", "skills", "contact"];
-=======
-    const sections = ["about", "projects", "skills", "contact"];
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -124,10 +141,7 @@ export default function Portfolio() {
 
   const navItems = [
     { id: "about", label: "About" },
-<<<<<<< HEAD
     { id: "experience", label: "Experience" },
-=======
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
     { id: "projects", label: "Projects" },
     { id: "skills", label: "Skills" },
     { id: "contact", label: "Contact" },
@@ -394,7 +408,6 @@ export default function Portfolio() {
         </div>
       </section>
 
-<<<<<<< HEAD
       {/* EXPERIENCE */}
       <section id="experience" style={{ padding: "60px 24px 100px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -405,56 +418,80 @@ export default function Portfolio() {
             <h2 className="font-display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, marginBottom: 40 }}>
               Where I've worked
             </h2>
-            <div
-              style={{
-                background: "#120627",
-                border: "1px solid rgba(0,240,255,0.14)",
-                borderRadius: 14,
-                padding: 32,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                flexWrap: "wrap",
-                gap: 20,
-              }}
-            >
-              <div style={{ minWidth: 260 }}>
-                <h3 className="font-display" style={{ fontSize: 20, fontWeight: 600, marginBottom: 6 }}>
-                  Python Development Intern
-                </h3>
-                <p style={{ color: "#00F0FF", fontSize: 14.5, marginBottom: 14 }}>
-                  Unessa Foundation · via Internshala
-                </p>
-                <p style={{ color: "#B9A6D9", fontSize: 14.5, lineHeight: 1.75, maxWidth: 560 }}>
-                  Selected for a Python Development internship, working on
-                  backend tasks and real-world Python problem solving.
-                </p>
-              </div>
-              <div style={{ textAlign: "right", minWidth: 140 }}>
-                <p className="font-mono" style={{ fontSize: 12, color: "#7C6B9C", letterSpacing: 1, textTransform: "uppercase", marginBottom: 4 }}>
-                  Certified
-                </p>
-                <p className="font-mono" style={{ fontSize: 14, color: "#F2E9FF" }}>
-                  Jan 28, 2026
-                </p>
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {EXPERIENCE.map((exp) => (
+                <div
+                  key={exp.id}
+                  style={{
+                    background: "#120627",
+                    border: "1px solid rgba(0,240,255,0.14)",
+                    borderRadius: 14,
+                    padding: 32,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    flexWrap: "wrap",
+                    gap: 20,
+                  }}
+                >
+                  <div style={{ minWidth: 260 }}>
+                    <h3 className="font-display" style={{ fontSize: 20, fontWeight: 600, marginBottom: 6 }}>
+                      {exp.role}
+                    </h3>
+                    <p style={{ color: "#00F0FF", fontSize: 14.5, marginBottom: 14 }}>
+                      {exp.org}
+                    </p>
+                    <p style={{ color: "#B9A6D9", fontSize: 14.5, lineHeight: 1.75, maxWidth: 560 }}>
+                      {exp.description}
+                    </p>
+                  </div>
+                  <div style={{ textAlign: "right", minWidth: 140 }}>
+                    <p
+                      className="font-mono"
+                      style={{
+                        fontSize: 12,
+                        color: exp.status === "Current" ? "#FF2E97" : "#7C6B9C",
+                        letterSpacing: 1,
+                        textTransform: "uppercase",
+                        marginBottom: 4,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                        justifyContent: "flex-end",
+                        width: "100%",
+                      }}
+                    >
+                      {exp.status === "Current" && (
+                        <span
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: "50%",
+                            background: "#FF2E97",
+                            boxShadow: "0 0 6px #FF2E97",
+                            display: "inline-block",
+                          }}
+                        />
+                      )}
+                      {exp.status}
+                    </p>
+                    <p className="font-mono" style={{ fontSize: 14, color: "#F2E9FF" }}>
+                      {exp.date}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </Reveal>
         </div>
       </section>
 
-=======
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
       {/* PROJECTS */}
       <section id="projects" style={{ padding: "60px 24px 100px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
             <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 14, textTransform: "uppercase" }}>
-<<<<<<< HEAD
               03 — Projects
-=======
-              02 — Projects
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
             </p>
             <h2 className="font-display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, marginBottom: 48 }}>
               Things I've built
@@ -573,11 +610,7 @@ export default function Portfolio() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <Reveal>
             <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 14, textTransform: "uppercase" }}>
-<<<<<<< HEAD
               04 — Skills
-=======
-              03 — Skills
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
             </p>
             <h2 className="font-display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, marginBottom: 48 }}>
               What I work with
@@ -615,11 +648,7 @@ export default function Portfolio() {
         <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
           <Reveal>
             <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 14, textTransform: "uppercase" }}>
-<<<<<<< HEAD
               05 — Contact
-=======
-              04 — Contact
->>>>>>> 917a8d2fa9ddfebd28776e8a34407e0c3da2b232
             </p>
             <h2 className="font-display" style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 600, marginBottom: 18, lineHeight: 1.25 }}>
               Let's talk backend, internships,<br />or interesting problems.
