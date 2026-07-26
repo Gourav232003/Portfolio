@@ -701,9 +701,9 @@ export default function Portfolio() {
               <a href="https://github.com/Gourav232003" target="_blank" rel="noopener noreferrer" style={{ color: "#7C6B9C" }}>
                 <Github size={20} />
               </a>
-              <a href="#" onClick={(e) => e.preventDefault()} title="Replace with your LinkedIn" style={{ color: "#7C6B9C" }}>
-                <Linkedin size={20} />
-              </a>
+              <a href="https://www.linkedin.com/in/gourav-pandey-a65ba1290" target="_blank" rel="noopener noreferrer" style={{ color: "#7C6B9C" }}>
+                 <Linkedin size={20} />
+             </a>
             </div>
           </Reveal>
         </div>
