@@ -117,6 +117,84 @@ function Reveal({ children, className = "" }) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Ambient background — subtle drifting particles on near-black canvas.
+// Plain 2D canvas, no dependencies. Respects prefers-reduced-motion.
+// ---------------------------------------------------------------------------
+function AmbientBackground() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let animationId;
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const COLORS = ["0,240,255", "255,46,151", "242,233,255"];
+    const COUNT = 65;
+    particles = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.4,
+      vx: (Math.random() - 0.5) * 0.1,
+      vy: (Math.random() - 0.5) * 0.1,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      baseAlpha: Math.random() * 0.3 + 0.12,
+      twinkleSpeed: Math.random() * 0.012 + 0.004,
+      twinklePhase: Math.random() * Math.PI * 2,
+    }));
+
+    function draw(time) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        if (!prefersReducedMotion) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+        }
+        const alpha = prefersReducedMotion
+          ? p.baseAlpha
+          : Math.max(0, p.baseAlpha + Math.sin(time * p.twinkleSpeed + p.twinklePhase) * 0.12);
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${p.color},${alpha})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      animationId = requestAnimationFrame(draw);
+    }
+    animationId = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
+
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("about");
 
@@ -194,6 +272,10 @@ export default function Portfolio() {
         }
       `}</style>
 
+      <AmbientBackground />
+
+      <div style={{ position: "relative", zIndex: 1 }}>
+
       {/* NAV */}
       <nav
         style={{
@@ -265,51 +347,85 @@ export default function Portfolio() {
           }}
         />
         <div style={{ position: "relative", zIndex: 10, maxWidth: 1100, margin: "0 auto", padding: "0 24px", width: "100%" }}>
-          <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 18, textTransform: "uppercase" }}>
-            Backend Developer · Python / Flask
-          </p>
-          <h1 className="font-display neon-text" style={{ fontSize: "clamp(40px, 7vw, 84px)", fontWeight: 700, lineHeight: 1.05, marginBottom: 22, maxWidth: 820, color: "#F2E9FF" }}>
-            GOURAV
-          </h1>
-          <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "#B9A6D9", maxWidth: 560, lineHeight: 1.6, marginBottom: 36 }}>
-            I build reliable backend systems — clean APIs, sound data models,
-            and the quiet infrastructure that makes an app trustworthy.
-            Currently studying CS at DSEU, New Delhi.
-          </p>
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-            <button
-              onClick={() => scrollTo("projects")}
-              className="font-mono neon-btn-cyan"
+          <div
+            className="hero-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.3fr 0.85fr",
+              gap: 56,
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 18, textTransform: "uppercase" }}>
+                Backend Developer · Python / Flask
+              </p>
+              <h1 className="font-display neon-text" style={{ fontSize: "clamp(40px, 7vw, 84px)", fontWeight: 700, lineHeight: 1.05, marginBottom: 22, maxWidth: 820, color: "#F2E9FF" }}>
+                GOURAV
+              </h1>
+              <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "#B9A6D9", maxWidth: 560, lineHeight: 1.6, marginBottom: 36 }}>
+                I build reliable backend systems — clean APIs, sound data models,
+                and the quiet infrastructure that makes an app trustworthy.
+                Currently studying CS at DSEU, New Delhi.
+              </p>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                <button
+                  onClick={() => scrollTo("projects")}
+                  className="font-mono neon-btn-cyan"
+                  style={{
+                    background: "#00F0FF",
+                    color: "#05010F",
+                    border: "none",
+                    padding: "13px 26px",
+                    borderRadius: 6,
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    letterSpacing: 0.3,
+                  }}
+                >
+                  View Projects
+                </button>
+                <button
+                  onClick={() => scrollTo("contact")}
+                  className="font-mono"
+                  style={{
+                    background: "transparent",
+                    color: "#F2E9FF",
+                    border: "1px solid rgba(242,233,255,0.25)",
+                    padding: "13px 26px",
+                    borderRadius: 6,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    letterSpacing: 0.3,
+                  }}
+                >
+                  Get in Touch
+                </button>
+              </div>
+            </div>
+            <div
+              className="hero-photo"
               style={{
-                background: "#00F0FF",
-                color: "#05010F",
-                border: "none",
-                padding: "13px 26px",
-                borderRadius: 6,
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: "pointer",
-                letterSpacing: 0.3,
+                borderRadius: 20,
+                overflow: "hidden",
+                border: "1px solid rgba(0,240,255,0.25)",
+                boxShadow: "0 0 30px rgba(0,240,255,0.18), 0 0 70px rgba(255,46,151,0.1)",
+                aspectRatio: "1 / 1.05",
               }}
             >
-              View Projects
-            </button>
-            <button
-              onClick={() => scrollTo("contact")}
-              className="font-mono"
-              style={{
-                background: "transparent",
-                color: "#F2E9FF",
-                border: "1px solid rgba(242,233,255,0.25)",
-                padding: "13px 26px",
-                borderRadius: 6,
-                fontSize: 14,
-                cursor: "pointer",
-                letterSpacing: 0.3,
-              }}
-            >
-              Get in Touch
-            </button>
+              <img
+                src={profilePhoto}
+                alt="Gourav"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  filter: "saturate(0.95) contrast(1.03)",
+                }}
+              />
+            </div>
           </div>
         </div>
         <button
@@ -339,28 +455,7 @@ export default function Portfolio() {
             <p className="font-mono" style={{ color: "#00F0FF", fontSize: 13, letterSpacing: 3, marginBottom: 14, textTransform: "uppercase" }}>
               01 — About
             </p>
-            <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "0.85fr 1.3fr 1fr", gap: 44, alignItems: "start" }}>
-              <div
-                style={{
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  border: "1px solid rgba(0,240,255,0.25)",
-                  boxShadow: "0 0 24px rgba(0,240,255,0.15), 0 0 60px rgba(255,46,151,0.08)",
-                  minWidth: 220,
-                }}
-              >
-                <img
-                  src={profilePhoto}
-                  alt="Gourav"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    display: "block",
-                    filter: "saturate(0.95) contrast(1.03)",
-                  }}
-                />
-              </div>
+            <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 44, alignItems: "start" }}>
               <div style={{ minWidth: 280 }}>
                 <h2 className="font-display" style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 600, marginBottom: 20, lineHeight: 1.25 }}>
                   I like systems that don't fall over.
@@ -721,8 +816,18 @@ export default function Portfolio() {
           .about-grid {
             grid-template-columns: 1fr !important;
           }
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .hero-photo {
+            max-width: 260px;
+            margin: 0 auto;
+            order: -1;
+          }
         }
       `}</style>
+
+      </div>
     </div>
   );
 }
