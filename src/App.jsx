@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useRef, useState } from "react";
 import { Github, Linkedin, Mail, FileDown, ArrowDown, ExternalLink, Sprout, Radio } from "lucide-react";
 import profilePhoto from "./assets/profile.jpg";
@@ -77,9 +77,7 @@ const SKILLS = [
   },
 ];
 
-=======
-src/App.jsx
->>>>>>> 4a26d5ef10dd4e641219133aa847df887873cade
+
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal wrapper
